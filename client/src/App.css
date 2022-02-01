@@ -1,0 +1,98 @@
+@import url('https://fonts.googleapis.com/css2?family=Signika:wght@300&display=swap');
+:root {
+  --main-bg-color: #282c34;
+  --white: #fff;
+} 
+* {
+  box-sizing: border-box;
+  font-family: 'Signika', sans-serif;
+}
+body {
+  background-image: url('background.png');
+
+}
+.header {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 8rem;
+}
+.header {
+  font-size: 5rem;
+  color: var(--white);
+}
+#loginContainer {
+  margin: auto;
+  text-align: center;
+  width: 500px;
+  padding: 2.2rem;
+  
+  background: var(--main-bg-color);
+  box-shadow: 0 8px 32px 0 rgba( 0,0,0, 0.20 );
+  backdrop-filter: blur( 20px );
+  -webkit-backdrop-filter: blur( 20px );
+  border-radius: 10px;
+  border: 1px solid rgba( 255, 255, 255, 0.18 );
+  transition: height 0.3s linear;
+}
+#inputName {
+  width: 100%;
+  background: #f1f2f80c;
+  border-radius: 10px;
+  border: 1px;
+  height: 70px;
+  outline: none;
+  padding-left: 1rem;
+  transition: all 0.5s;
+  color: var(--white);
+  font-size: 16px;
+}
+#inputName::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+  color: var(--white);
+  font-size: 18px;
+  opacity: 1; /* Firefox */
+}
+.rabbit-select-container {
+  display: flex;
+  margin-top: 0.8rem;
+  width: 100%;
+  background: #f1f2f80c;
+  border-radius: 10px;
+  border: 1px;
+  height: 350px;
+  transition: all 0.5s;
+}
+.arrow {
+  cursor: pointer;
+  color: var(--white);
+  transition: all 0.2s;
+}
+.arrow:hover {
+  transform: scale(1.5);
+}
+.img-container, 
+.rabbit-select-left,
+.rabbit-select-right {
+  margin: auto;
+}
+.btn {
+  font-size: 1rem;
+  border-radius: 10px;
+  width: 100%;
+  height: 70px;
+  transition: all 0.5s;
+  border: none;
+}
+#joinGameBtn, 
+#inputCode {
+  margin-top: 0.8rem;
+  cursor: pointer;
+}
+#joinGameBtn {
+  background: #ff7362;
+  color: rgba( 255 255 255 );
+  transition: all 0.5s;
+}
+#joinGameBtn:hover {
+  color: black;
+  background: rgba( 255 255 255 );
+}
