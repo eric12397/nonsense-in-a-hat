@@ -3,11 +3,13 @@ import rabbitPink from "../../../assets/rabbit-pink.svg";
 import rabbitBlue from "../../../assets/rabbit-blue.svg";
 import rabbitPurple from "../../../assets/rabbit-purple.svg";
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 export const LoginPage = () => {
   const avatarArray = [rabbitPink, rabbitBlue, rabbitPurple];
+  const navigate = useNavigate();
 
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false); // TODO: add loading spinner
   const [name, setName] = useState("");
   const [avatarIndex, setAvatarIndex] = useState(0);
 
@@ -19,8 +21,8 @@ export const LoginPage = () => {
     axios
       .post('http://localhost:8000/players', { name, avatarIndex })
       .then(response => {
-        console.log(response.data);
         setIsLoading(false);
+        navigate("/home");
       })
   }
 
@@ -35,7 +37,6 @@ export const LoginPage = () => {
         if (index < avatarArray.length - 1) index++;
         else index = 0;
     }
-  
     setAvatarIndex(index);
   }
 

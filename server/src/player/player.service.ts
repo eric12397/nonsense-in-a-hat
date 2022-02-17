@@ -15,9 +15,12 @@ export class PlayerService {
   };
 
   public createPlayer = (playerData: CreatePlayerDTO): Player => {
-    const newPlayer = new Player(playerData);
-    this._players.set(newPlayer.id, newPlayer);
+    const { name } = playerData;
 
+    const newPlayer = new Player();
+    newPlayer.name = name;
+
+    this._players.set(newPlayer.id, newPlayer);
     return newPlayer;
   };
 }

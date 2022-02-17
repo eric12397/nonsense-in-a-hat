@@ -7,10 +7,6 @@
   box-sizing: border-box;
   font-family: 'Signika', sans-serif;
 }
-body {
-  background-image: url('background.png');
-
-}
 .header {
   display: flex;
   justify-content: center;
