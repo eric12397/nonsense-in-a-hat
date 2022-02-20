@@ -4,22 +4,27 @@ import rabbitBlue from "../../../assets/rabbit-blue.svg";
 import rabbitPurple from "../../../assets/rabbit-purple.svg";
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { Player } from '../../player/interfaces/Player';
+
+const defaultPlayer: Player = {
+  name: "",
+  avatar: rabbitPink
+}
 
 export const LoginPage = () => {
   const avatarArray = [rabbitPink, rabbitBlue, rabbitPurple];
   const navigate = useNavigate();
 
   const [isLoading, setIsLoading] = useState(false); // TODO: add loading spinner
-  const [name, setName] = useState("");
   const [avatarIndex, setAvatarIndex] = useState(0);
-
+  const [player, setPlayer] = useState<Player>(defaultPlayer);
   
   const submitForm = (event: any) => {
     event.preventDefault();
     setIsLoading(true);
 
     axios
-      .post('http://localhost:8000/players', { name, avatarIndex })
+      .post('http://localhost:8000/players', player)
       .then(response => {
         setIsLoading(false);
         navigate("/home");
@@ -34,10 +39,12 @@ export const LoginPage = () => {
       else index = avatarArray.length - 1;
     } 
     else if (direction === "right") {
-        if (index < avatarArray.length - 1) index++;
-        else index = 0;
+      if (index < avatarArray.length - 1) index++;
+      else index = 0;
     }
+
     setAvatarIndex(index);
+    setPlayer({ ...player, avatar: avatarArray[index] });
   }
 
   return (
@@ -48,7 +55,7 @@ export const LoginPage = () => {
           type="text" 
           autoComplete="off" 
           placeholder="Enter your name" 
-          onChange={ event => setName(event.target.value) }
+          onChange={ event => setPlayer({ ...player, name: event.target.value }) }
         />
         
         <div className="rabbit-select-container">
@@ -58,7 +65,7 @@ export const LoginPage = () => {
           </i>
           
           <div className="img-container">
-              <img src={ avatarArray[avatarIndex] } alt=''/>
+            <img src={ avatarArray[avatarIndex] } alt=''/>
           </div>
 
           <i 

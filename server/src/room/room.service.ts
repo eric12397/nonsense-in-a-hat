@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { PlayerService } from 'src/player/player.service';
 import { Room } from './entities/room.model';
 import { RoomDTO } from './dto/room.dto';
-import { Player } from 'src/player/player.model';
+import { Player } from 'src/player/entities/player.model';
 
 @Injectable()
 export class RoomService {

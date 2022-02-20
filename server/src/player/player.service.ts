@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { CreatePlayerDTO } from './dto/createPlayer.dto';
-import { Player } from './player.model';
+import { Player } from './entities/player.model';
 
 @Injectable()
 export class PlayerService {

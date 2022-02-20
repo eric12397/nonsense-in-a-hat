@@ -6,7 +6,7 @@ import {
 } from '@nestjs/websockets';
 import { Socket } from 'socket.io';
 
-@WebSocketGateway()
+@WebSocketGateway({ cors: true })
 export class ConnectionGateway implements OnGatewayDisconnect, OnGatewayConnection {
   public handleDisconnect(@ConnectedSocket() client: Socket) {
     console.log('Socket disconnected!');
