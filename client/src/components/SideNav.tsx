@@ -1,20 +1,24 @@
 import React from 'react';
-import rabbitPink from "../assets/rabbit-pink.svg";
+import { Player } from '../features/player/interfaces/Player';
 
-const SideNav = () => {
+interface SideNavProps {
+  profile: Player
+}
+
+const SideNav = ({ profile }: SideNavProps) => {
   return (
     <div className='w-1/5 rounded-l-xl bg-midnight'>
       <div className="p-3 w-full">
 
         <ul className="relative">
-          {/* <li className="relative flex items-center p-3 text-salmon font-semibold">
+          <li className="relative flex items-center p-3 text-white">
             <img
               className="w-20 mr-4"
-              src={ rabbitPink }
+              src={ profile.avatar }
               alt=""
             /> 
-            <span>Welcome, Zekey!</span>
-          </li> */}
+            <span>Welcome, { profile.name }!</span>
+          </li>
 
           <li className="relative">
             <button className="flex items-center text-sm p-5 h-15 w-full overflow-hidden text-white text-ellipsis whitespace-nowrap rounded hover:text-white hover:bg-fade transition duration-300 ease-in-out" >

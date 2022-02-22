@@ -1,11 +1,13 @@
+import { v4 as uuidv4 } from 'uuid';
+
 export class Player {
   public id: string;
 
   public name: string;
 
-  public rabbit: string;
+  public avatar: string;
 
   constructor() {
-    // this.id = uuid();
+    this.id = uuidv4();
   }
 }

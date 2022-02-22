@@ -15,7 +15,7 @@ const initialRoomData1: Room = {
   isGameInProgress: false,
 }
 const initialRoomData2: Room = {
-  id: "123",
+  id: "124",
   name: "Resume Workshop",
   host: { name: "Gordi", avatar: rabbitBlue },
   currentPlayerCount: 4,
@@ -25,14 +25,14 @@ const initialRoomData2: Room = {
 }
 
 const RoomsList = () => {
-  const [rooms, setRooms] = useState<Room[]>([initialRoomData1,initialRoomData2,initialRoomData1]);
+  const [rooms, setRooms] = useState<Room[]>([initialRoomData1,initialRoomData2]);
 
   useEffect(() => {
-    axios
-      .get<Room[]>('http://localhost:8000/rooms')
-      .then(response => {
-        setRooms(response.data);
-      })
+    // axios
+    //   .get<Room[]>('http://localhost:8000/rooms')
+    //   .then(response => {
+    //     setRooms(response.data);
+    //   })
   }, []);
 
   return (

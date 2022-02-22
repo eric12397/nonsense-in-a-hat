@@ -2,9 +2,10 @@ import React, { useState } from 'react';
 import rabbitPink from "../../../assets/rabbit-pink.svg";
 import rabbitBlue from "../../../assets/rabbit-blue.svg";
 import rabbitPurple from "../../../assets/rabbit-purple.svg";
-import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { Player } from '../../player/interfaces/Player';
+import { useAppDispatch } from '../../../hooks/redux';
+import { loginAsGuest } from '../authSlice';
 
 const defaultPlayer: Player = {
   name: "",
@@ -14,21 +15,15 @@ const defaultPlayer: Player = {
 export const LoginPage = () => {
   const avatarArray = [rabbitPink, rabbitBlue, rabbitPurple];
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
 
-  const [isLoading, setIsLoading] = useState(false); // TODO: add loading spinner
   const [avatarIndex, setAvatarIndex] = useState(0);
   const [player, setPlayer] = useState<Player>(defaultPlayer);
   
-  const submitForm = (event: any) => {
+  const submitForm = async (event: any) => {
     event.preventDefault();
-    setIsLoading(true);
-
-    axios
-      .post('http://localhost:8000/players', player)
-      .then(response => {
-        setIsLoading(false);
-        navigate("/home");
-      })
+    await dispatch(loginAsGuest(player)).unwrap();
+    navigate('/home');
   }
 
   const handleAvatarSelect = (direction: string) => {
