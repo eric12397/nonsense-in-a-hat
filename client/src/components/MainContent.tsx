@@ -1,6 +1,5 @@
 import React from 'react';
-import { Route, Routes } from 'react-router-dom';
-import RoomsList from '../features/room/components/RoomsList';
+import { Outlet, Link } from 'react-router-dom';
 
 const MainContent = () => {
   return (
@@ -11,11 +10,12 @@ const MainContent = () => {
 
       <nav className='mb-5'>
         <ul className='flex space-x-5'>
-          <li>Join Public Room</li>
+          <Link to="rooms"><li>Join Room</li></Link>
+          <Link to="rooms/host"><li>Host Room</li></Link>
         </ul>
       </nav>
 
-      <RoomsList />
+      <Outlet />
     </div>
   )
 };

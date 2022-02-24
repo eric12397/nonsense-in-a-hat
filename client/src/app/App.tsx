@@ -3,6 +3,8 @@ import './App.css';
 import HomePage from '../components/HomePage';
 import LoginPage from '../features/auth/components/LoginPage';
 import { Route, Routes } from 'react-router-dom';
+import RoomsList from '../features/room/components/RoomsList';
+import HostRoom from '../features/room/components/HostRoom';
 
 function App() {
   return (
@@ -13,7 +15,10 @@ function App() {
 
       <Routes>
         <Route path="/" element={ <LoginPage /> } />
-        <Route path="/home" element={ <HomePage /> }/>
+        <Route path="/home" element={ <HomePage /> }>
+          <Route path="rooms" element={ <RoomsList /> } />
+          <Route path="rooms/host" element={ <HostRoom /> } />
+        </Route>
       </Routes>
     </div>
   );

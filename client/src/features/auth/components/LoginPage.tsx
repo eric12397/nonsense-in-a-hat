@@ -23,7 +23,7 @@ export const LoginPage = () => {
   const submitForm = async (event: any) => {
     event.preventDefault();
     await dispatch(loginAsGuest(player)).unwrap();
-    navigate('/home');
+    navigate('/home/rooms');
   }
 
   const handleAvatarSelect = (direction: string) => {
