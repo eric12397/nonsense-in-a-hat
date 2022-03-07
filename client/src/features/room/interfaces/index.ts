@@ -13,3 +13,13 @@ export interface Room {
 
   isGameInProgress: boolean;
 };
+
+export interface CreateRoom {
+  name: string;
+
+  password: string;
+
+  hostId: string;
+
+  maxPlayersAllowed: number;
+}

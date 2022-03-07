@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 import RoomItem from './RoomItem';
-import { Room } from '../interfaces/Room';
+import { Room } from '../interfaces';
 import rabbitPink from "../../../assets/rabbit-pink.svg";
 import rabbitBlue from "../../../assets/rabbit-blue.svg";
 

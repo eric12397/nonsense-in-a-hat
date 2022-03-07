@@ -1,3 +1,4 @@
+import { v4 as uuidv4 } from 'uuid';
 import { Player } from 'src/player/entities/player.model';
 
 export class Room {
@@ -15,5 +16,14 @@ export class Room {
 
   public isGameInProgress: boolean;
 
-  public secureCode: string;
+  public password: string;
+
+  constructor() {
+    this.id = uuidv4();
+    this.participants = new Array<Player>();
+  }
+
+  public joinRoom = (player: Player): void => {
+    this.participants.push(player);
+  };
 }
