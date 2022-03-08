@@ -35,7 +35,7 @@ export class RoomService {
   };
 
   public createRoom = (roomData: CreateRoomDTO): Room => {
-    const { name, password, hostId, maxPlayersAllowed } = roomData;
+    const { name, password, hostId, maxPlayersAllowed, rounds, mode } = roomData;
 
     const host = this._playerService.getPlayerById(hostId);
 
@@ -45,6 +45,8 @@ export class RoomService {
     newRoom.host = host;
     newRoom.maxPlayersAllowed = maxPlayersAllowed;
     newRoom.password = password;
+    newRoom.rounds = rounds;
+    newRoom.gameMode = mode;
 
     this._rooms.set(newRoom.id, newRoom);
     return newRoom;

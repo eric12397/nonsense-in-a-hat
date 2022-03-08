@@ -8,7 +8,9 @@ const initialRoomData: CreateRoom = {
   name: "",
   password: "",
   hostId: "",
-  maxPlayersAllowed: 0,
+  maxPlayersAllowed: 2,
+  rounds: 5,
+  mode: "Classic"
 }
 
 const HostRoom = () => {
@@ -23,7 +25,7 @@ const HostRoom = () => {
   }
 
   return (
-    <div className='shadow p-8 rounded bg-white'>
+    <div className='shadow p-10 rounded bg-white'>
       <div className="flex flex-wrap items-center mb-12">
         <label className="w-20 mr-16 font-bold">Name:</label>
         <input 
@@ -44,8 +46,8 @@ const HostRoom = () => {
           />
       </div>
 
-      <div className="flex flex-wrap">
-        <div className="flex items-center mb-12">
+      <div className="flex flex-wrap justify-start">
+        <div className="flex basis-1/3 items-center mb-12">
           <label className="w-20 mr-16 font-bold">Max players:</label>
           <select
             className="shadow-sm bg-gray-50 border border-gray-300 rounded-lg outline-none p-3" 
@@ -57,6 +59,47 @@ const HostRoom = () => {
               <option>5</option>
               <option>6</option>
           </select>
+        </div>
+
+        <div className="flex basis-1/3 items-center mb-12">
+          <label className="w-20 mr-16 font-bold">Number of rounds:</label>
+          <select
+            className="shadow-sm bg-gray-50 border border-gray-300 rounded-lg outline-none p-3" 
+            onChange={ event => setRoomData({ ...roomData, rounds: parseInt(event.target.value) }) }
+            >
+              <option>5</option>
+              <option>10</option>
+              <option>15</option>
+              <option>20</option>
+          </select>
+        </div>
+
+        <div className="basis-1/3 mb-12">
+          <label className="mb-2 font-bold">Game mode:</label>
+          <div className="mb-1">
+            <label>
+              <input
+                type="radio"
+                name="mode"
+                value="Classic"
+                checked={true}
+                onChange={ event => setRoomData({ ...roomData, mode: event.target.value }) }
+              />
+              Classic
+            </label>
+          </div>
+
+          <div>
+            <label>
+              <input
+                type="radio"
+                name="mode"
+                value="Quiplash"
+                onChange={ event => setRoomData({ ...roomData, mode: event.target.value }) }
+              />
+              Quiplash
+            </label>
+          </div>
         </div>
       </div>
 

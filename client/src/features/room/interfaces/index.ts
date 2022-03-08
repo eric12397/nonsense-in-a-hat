@@ -22,4 +22,8 @@ export interface CreateRoom {
   hostId: string;
 
   maxPlayersAllowed: number;
+
+  rounds: number;
+
+  mode: string;
 }

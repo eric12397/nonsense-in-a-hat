@@ -12,6 +12,8 @@ export class Room {
 
   public maxPlayersAllowed: number;
 
+  public rounds: number;
+
   public gameMode: string;
 
   public isGameInProgress: boolean;

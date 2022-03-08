@@ -19,6 +19,10 @@ export const roomSlice = createSlice({
   initialState,
   reducers: {},
   extraReducers: (builder) => {
+    builder.addCase(getRooms.fulfilled, (state, action: PayloadAction<Room[]>) => {
+      state.rooms = action.payload;
+    });
+
     builder.addCase(createRoom.fulfilled, (state, action: PayloadAction<Room>) => {
       state.rooms.push(action.payload);
     });
@@ -26,6 +30,14 @@ export const roomSlice = createSlice({
 })
 
 // Async thunks
+export const getRooms = createAsyncThunk(
+  'rooms/fetch',
+  async () => {
+    const response = await roomAPI.getRooms();
+    return response;
+  }
+)
+ 
 export const createRoom = createAsyncThunk(
   'rooms/create',
   async (room: CreateRoom, thunkAPI) => {
@@ -36,5 +48,8 @@ export const createRoom = createAsyncThunk(
     return response;
   }
 )
+
+// Selectors
+export const selectRooms = (state: RootState) => state.rooms.rooms;
 
 export default roomSlice.reducer;
