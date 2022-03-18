@@ -20,8 +20,8 @@ const HostRoom = () => {
 
   const submitForm = async (event: any) => {
     event.preventDefault();
-    await dispatch(createRoom(roomData)).unwrap();
-    navigate('/home/rooms');
+    const { id } = await dispatch(createRoom(roomData)).unwrap();
+    navigate(`/rooms/${id}`);
   }
 
   return (

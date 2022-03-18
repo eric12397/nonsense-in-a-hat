@@ -40,7 +40,6 @@ export class RoomService {
     const host = this._playerService.getPlayerById(hostId);
 
     const newRoom = new Room();
-    newRoom.joinRoom(host);
     newRoom.name = name;
     newRoom.host = host;
     newRoom.maxPlayersAllowed = maxPlayersAllowed;
@@ -50,5 +49,13 @@ export class RoomService {
 
     this._rooms.set(newRoom.id, newRoom);
     return newRoom;
+  };
+
+  public joinPlayerToRoom = (roomId: string, playerId: string): Room => {
+    const room = this.getRoomById(roomId);
+    const player = this._playerService.getPlayerById(playerId);
+
+    room.joinRoom(player);
+    return room;
   };
 }

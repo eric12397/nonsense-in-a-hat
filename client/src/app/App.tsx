@@ -5,6 +5,7 @@ import LoginPage from '../features/auth/components/LoginPage';
 import { Route, Routes } from 'react-router-dom';
 import RoomsList from '../features/room/components/RoomsList';
 import HostRoom from '../features/room/components/HostRoom';
+import RoomDetails from '../features/room/components/RoomDetails';
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
           <Route path="rooms" element={ <RoomsList /> } />
           <Route path="rooms/host" element={ <HostRoom /> } />
         </Route>
+        <Route path="/rooms/:id" element={ <RoomDetails /> } />
       </Routes>
     </div>
   );
