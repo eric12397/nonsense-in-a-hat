@@ -66,4 +66,9 @@ export const joinRoom = (roomId: string, playerId: string): AnyAction => ({
   payload: { roomId, playerId }
 });
 
+export const leaveRoom = (roomId: string, playerId: string): AnyAction => ({
+  type: "rooms/leave",
+  payload: { roomId, playerId }
+});
+
 export default roomSlice.reducer;

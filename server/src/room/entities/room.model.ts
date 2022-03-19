@@ -28,4 +28,8 @@ export class Room {
   public joinRoom = (player: Player): void => {
     this.participants.push(player);
   };
+
+  public leaveRoom = (player: Player): void => {
+    this.participants = this.participants.filter((p) => p.id !== player.id);
+  };
 }

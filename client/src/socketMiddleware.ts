@@ -12,16 +12,28 @@ export const socketMiddleware: Middleware = (storeAPI: MiddlewareAPI<Dispatch<An
 
     switch(action.type) {
       case "players/create/fulfilled" : {
-        socket = io("http://localhost:8000");
+        socket = io("http://localhost:8000", {
+          auth: {
+            playerId: action.payload.id
+          },
+        });
         
         // subscribe to listeners
         socket.on('joinRoomSuccess', (data: Room) => {
+          storeAPI.dispatch(updateRoom(data));
+        });
+
+        socket.on('leaveRoomSuccess', (data: Room) => {
           storeAPI.dispatch(updateRoom(data));
         });
         break;
       }
       case "rooms/join": {
         socket.emit("joinRoom", action.payload);
+        break;
+      }
+      case "rooms/leave": {
+        socket.emit("leaveRoom", action.payload);
         break;
       }
     }

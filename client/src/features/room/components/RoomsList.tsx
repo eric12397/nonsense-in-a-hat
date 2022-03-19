@@ -1,11 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import RoomItem from './RoomItem';
-import { Room } from '../interfaces';
-import rabbitPink from "../../../assets/rabbit-pink.svg";
-import rabbitBlue from "../../../assets/rabbit-blue.svg";
 import { getRooms, selectRooms } from '../roomSlice';
 import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
-import { useSelector } from 'react-redux';
 
 const RoomsList = () => {
   const rooms = useAppSelector(selectRooms);

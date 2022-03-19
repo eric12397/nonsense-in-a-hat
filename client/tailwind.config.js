@@ -14,7 +14,7 @@ module.exports = {
       'midnight': '#282c34',
       'salmon' : '#fe7470',
       'coral': '#fb8260',
-
+      'green': colors.green
     },
   },
   plugins: [],

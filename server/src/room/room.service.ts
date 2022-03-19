@@ -20,9 +20,10 @@ export class RoomService {
     const rooms = Array.from<Room>(this._rooms.values());
 
     return rooms.map((room) => {
-      const { host, name, participants, maxPlayersAllowed, gameMode, isGameInProgress } = room;
+      const { id, host, name, participants, maxPlayersAllowed, gameMode, isGameInProgress } = room;
 
       const roomDTO = new RoomDTO();
+      roomDTO.id = id;
       roomDTO.host = host;
       roomDTO.name = name;
       roomDTO.currentPlayerCount = participants.length;
@@ -56,6 +57,14 @@ export class RoomService {
     const player = this._playerService.getPlayerById(playerId);
 
     room.joinRoom(player);
+    return room;
+  };
+
+  public removePlayerFromRoom = (roomId: string, playerId: string): Room => {
+    const room = this.getRoomById(roomId);
+    const player = this._playerService.getPlayerById(playerId);
+
+    room.leaveRoom(player);
     return room;
   };
 }
