@@ -1,8 +1,8 @@
 import { AnyAction, Dispatch, Middleware, MiddlewareAPI } from 'redux';
 import { RootState } from './app/store';
 import { io, Socket } from "socket.io-client";
-import { Room } from './features/room/interfaces';
 import { updateRoom } from './features/room/roomSlice';
+import { Room } from './features/room/interfaces/Room';
 
 export const socketMiddleware: Middleware = (storeAPI: MiddlewareAPI<Dispatch<AnyAction>, RootState>) => {
   

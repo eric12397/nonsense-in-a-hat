@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { CreateRoom } from '../interfaces';
+import { CreateRoom } from '../interfaces/CreateRoom';
 import { createRoom } from '../roomSlice';
 import { useAppDispatch } from '../../../hooks/redux';
 import { useNavigate } from 'react-router-dom';

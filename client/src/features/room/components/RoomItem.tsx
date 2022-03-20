@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Room } from '../interfaces';
+import Modal from '../../../components/Modal';
+import { Room } from '../interfaces/Room';
+import VerifyRoomPassword from './VerifyRoomPassword';
 
 interface RoomItemProps {
   room: Room;
@@ -9,14 +11,33 @@ interface RoomItemProps {
 
 const RoomItem = ({ room, host }: RoomItemProps) => {
   const navigate = useNavigate();
+  const [isOpen, setIsOpen] = useState(false);
+  const [isPasswordVerified, setIsPasswordVerified] = useState(false);
+
+  const toggleModal = () => setIsOpen(!isOpen);
 
   const handleJoin = async (event: any) => {
     event.preventDefault();
-    navigate(`/rooms/${room.id}`);
-  }
+    toggleModal();
+  };
+
+  useEffect(() => {
+    if (isPasswordVerified) {
+      console.log('verified');
+      navigate(`/rooms/${room.id}`);
+    }
+  }, [isPasswordVerified]);
 
   return (
-    <div className='bg-white shadow-md '>
+    <div className='bg-white bg-opacity-80 shadow-md'>
+      <Modal isOpen={ isOpen } toggle={ toggleModal } >
+        <VerifyRoomPassword 
+          roomId={ room.id }
+          name={ room.name } 
+          setIsPasswordVerified={ setIsPasswordVerified }
+        />
+      </Modal>
+
       <div className="flex items-center p-5">
         <img
           className="w-24 mr-8"

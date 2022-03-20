@@ -9,7 +9,7 @@ module.exports = {
     colors: {
       'white': '#fff',
       'fade': '#f1f2f80c',
-      'silver': '#f5f6fd',
+      'silver': '#eef2f5',
       'gray': colors.gray,
       'midnight': '#282c34',
       'salmon' : '#fe7470',

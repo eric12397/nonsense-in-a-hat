@@ -1,8 +1,9 @@
 import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit'
 import type { RootState } from '../../app/store'
 import { roomAPI } from '../room/api'
-import { CreateRoom, Room } from './interfaces'
+import { CreateRoom } from './interfaces/CreateRoom'
 import { AnyAction } from 'redux';
+import { Room } from './interfaces/Room';
 
 // Define a type for the slice state
 interface RoomsState {
@@ -58,7 +59,7 @@ export const { updateRoom } = roomSlice.actions
 
 // Selectors
 export const selectRooms = (state: RootState) => state.rooms.rooms;
-export const selectRoomById = (state: RootState, id: string) => state.rooms.rooms.find(r => r.id === id); 
+export const selectRoomById = (state: RootState, id: string) => state.rooms.rooms.find(r => r.id === id);
 
 // Action creators
 export const joinRoom = (roomId: string, playerId: string): AnyAction => ({
