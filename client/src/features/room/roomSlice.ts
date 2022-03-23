@@ -7,12 +7,14 @@ import { Room } from './interfaces/Room';
 
 // Define a type for the slice state
 interface RoomsState {
-  rooms: Room[]
+  rooms: Room[],
+  isRoomRemoved: boolean;
 }
 
 // Define the initial state using that type
 const initialState: RoomsState = {
-  rooms: []
+  rooms: [],
+  isRoomRemoved: false,
 }
 
 export const roomSlice = createSlice({
@@ -22,7 +24,14 @@ export const roomSlice = createSlice({
   reducers: {
     updateRoom: (state, action: PayloadAction<Room>) => {
       state.rooms = state.rooms.map(r => r.id === action.payload.id ? action.payload : r);
-    }
+    },
+    updateRoomRemovedFlag: (state, action: PayloadAction<boolean>) => {
+      state.isRoomRemoved = action.payload;
+    },
+    removeRoom: (state, action: PayloadAction<string>) => {
+      state.isRoomRemoved = true;
+      state.rooms = state.rooms.filter(r => r.id !== action.payload);
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(getRooms.fulfilled, (state, action: PayloadAction<Room[]>) => {
@@ -55,11 +64,12 @@ export const createRoom = createAsyncThunk(
   }
 )
 
-export const { updateRoom } = roomSlice.actions
+export const { updateRoom, removeRoom, updateRoomRemovedFlag } = roomSlice.actions
 
 // Selectors
 export const selectRooms = (state: RootState) => state.rooms.rooms;
 export const selectRoomById = (state: RootState, id: string) => state.rooms.rooms.find(r => r.id === id);
+export const selectRoomRemovedFlag = (state: RootState) => state.rooms.isRoomRemoved;
 
 // Action creators
 export const joinRoom = (roomId: string, playerId: string): AnyAction => ({

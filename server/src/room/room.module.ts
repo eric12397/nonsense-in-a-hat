@@ -8,6 +8,6 @@ import { RoomService } from './room.service';
   imports: [PlayerModule],
   controllers: [RoomController],
   providers: [RoomService, RoomGateway],
-  exports: [RoomService],
+  exports: [RoomService, RoomGateway],
 })
 export class RoomModule {}

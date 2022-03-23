@@ -4,20 +4,18 @@ import {
   OnGatewayDisconnect,
   WebSocketGateway,
 } from '@nestjs/websockets';
-import { isNullOrUndefined } from 'util';
 import { MySocket } from './interfaces/mySocket';
-import { RoomService } from './room/room.service';
+import { RoomGateway } from './room/room.gateway';
 
 @WebSocketGateway({ cors: true })
 export class ConnectionGateway implements OnGatewayDisconnect, OnGatewayConnection {
-  constructor(private readonly _roomService: RoomService) {}
+  constructor(private readonly _roomGateway: RoomGateway) {}
 
   public handleDisconnect(@ConnectedSocket() client: MySocket) {
     console.log('Socket disconnected!');
 
     if (client.room != null) {
-      const room = this._roomService.removePlayerFromRoom(client.room, client.player);
-      client.to(room.id).emit('leaveRoomSuccess', room);
+      this._roomGateway.leaveRoom(client, client.room, client.player);
     }
   }
 

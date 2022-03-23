@@ -23,7 +23,6 @@ const RoomItem = ({ room, host }: RoomItemProps) => {
 
   useEffect(() => {
     if (isPasswordVerified) {
-      console.log('verified');
       navigate(`/rooms/${room.id}`);
     }
   }, [isPasswordVerified]);

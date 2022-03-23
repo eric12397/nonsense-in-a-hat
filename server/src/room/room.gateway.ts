@@ -22,9 +22,7 @@ export class RoomGateway {
     @MessageBody('roomId') roomId: string,
     @MessageBody('playerId') playerId: string,
   ) {
-    console.log('Socket joined room!');
     const room = this._roomService.joinPlayerToRoom(roomId, playerId);
-
     socket.room = roomId;
     socket.join(room.id);
     this.server.in(room.id).emit('joinRoomSuccess', room);
@@ -36,10 +34,18 @@ export class RoomGateway {
     @MessageBody('roomId') roomId: string,
     @MessageBody('playerId') playerId: string,
   ) {
-    console.log('Socket left room!');
     const room = this._roomService.removePlayerFromRoom(roomId, playerId);
-
     socket.room = null;
-    socket.to(room.id).emit('leaveRoomSuccess', room);
+
+    if (room.host.id === playerId) {
+      // if host leaves, all other players have to leave
+      socket.to(room.id).emit('hostLeftRoom', roomId);
+    } else if (room.participants.length === 0) {
+      // have to wait for last player to leave before deleting room
+      this._roomService.deleteRoom(room.id);
+    } else {
+      // otherwise, signal that a player left the room
+      socket.to(room.id).emit('leaveRoomSuccess', room);
+    }
   }
 }

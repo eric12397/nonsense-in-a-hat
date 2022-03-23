@@ -52,6 +52,11 @@ export class RoomService {
     return newRoom;
   };
 
+  public deleteRoom = (roomId: string): string => {
+    this._rooms.delete(roomId);
+    return roomId;
+  };
+
   public joinPlayerToRoom = (roomId: string, playerId: string): Room => {
     const room = this.getRoomById(roomId);
     const player = this._playerService.getPlayerById(playerId);

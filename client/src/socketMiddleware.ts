@@ -1,7 +1,7 @@
 import { AnyAction, Dispatch, Middleware, MiddlewareAPI } from 'redux';
 import { RootState } from './app/store';
 import { io, Socket } from "socket.io-client";
-import { updateRoom } from './features/room/roomSlice';
+import { removeRoom, updateRoom } from './features/room/roomSlice';
 import { Room } from './features/room/interfaces/Room';
 
 export const socketMiddleware: Middleware = (storeAPI: MiddlewareAPI<Dispatch<AnyAction>, RootState>) => {
@@ -25,6 +25,10 @@ export const socketMiddleware: Middleware = (storeAPI: MiddlewareAPI<Dispatch<An
 
         socket.on('leaveRoomSuccess', (data: Room) => {
           storeAPI.dispatch(updateRoom(data));
+        });
+
+        socket.on('hostLeftRoom', (roomId: string) => {
+          storeAPI.dispatch(removeRoom(roomId));
         });
         break;
       }
