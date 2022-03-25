@@ -10,8 +10,8 @@ const MainContent = () => {
 
       <nav className='mb-5'>
         <ul className='flex space-x-5'>
-          <Link to="rooms"><li>Join Room</li></Link>
-          <Link to="rooms/host"><li>Host Room</li></Link>
+          <Link to="games"><li>Join Game</li></Link>
+          <Link to="games/host"><li>Host Game</li></Link>
         </ul>
       </nav>
 

@@ -1,4 +1,4 @@
-export class CreateRoomDTO {
+export class CreateGameDTO {
   public name: string;
 
   public password: string;

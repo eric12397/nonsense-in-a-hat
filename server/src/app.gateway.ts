@@ -5,17 +5,17 @@ import {
   WebSocketGateway,
 } from '@nestjs/websockets';
 import { MySocket } from './interfaces/mySocket';
-import { RoomGateway } from './room/room.gateway';
+import { GameGateway } from './game/game.gateway';
 
 @WebSocketGateway({ cors: true })
 export class ConnectionGateway implements OnGatewayDisconnect, OnGatewayConnection {
-  constructor(private readonly _roomGateway: RoomGateway) {}
+  constructor(private readonly _gameGateway: GameGateway) {}
 
   public handleDisconnect(@ConnectedSocket() client: MySocket) {
     console.log('Socket disconnected!');
 
-    if (client.room != null) {
-      this._roomGateway.leaveRoom(client, client.room, client.player);
+    if (client.game != null) {
+      this._gameGateway.leaveGame(client, client.game, client.player);
     }
   }
 

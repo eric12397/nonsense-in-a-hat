@@ -1,31 +1,31 @@
 import React, { useState } from 'react'
-import { roomAPI } from '../api';
-import { VerifyRoom } from '../interfaces/VerifyRoom';
+import { gameAPI } from '../api';
+import { VerifyGame } from '../interfaces/VerifyGame';
 
-interface VerifyRoomPasswordProps {
-  roomId: string;
+interface VerifyGamePasswordProps {
+  gameId: string;
   name: string;
   setIsPasswordVerified: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-const initialRoomData: VerifyRoom = {
-  roomId: "",
+const initialGameData: VerifyGame = {
+  gameId: "",
   password: ""
 }
 
-const VerifyRoomPassword = ({ roomId, name, setIsPasswordVerified }: VerifyRoomPasswordProps) => {
-  const [roomData, setRoomData] = useState<VerifyRoom>(initialRoomData);
+const VerifyGamePassword = ({ gameId, name, setIsPasswordVerified }: VerifyGamePasswordProps) => {
+  const [gameData, setGameData] = useState<VerifyGame>(initialGameData);
 
   const submitForm = async (event: any) => {
     // TODO: add form validation
     event.preventDefault();
-    const { password } = roomData;
+    const { password } = gameData;
 
     if (!password) {
       return;
     }
-    roomData.roomId = roomId;
-    const isPasswordVerified = await roomAPI.verifyRoomPassword(roomData);
+    gameData.gameId = gameId;
+    const isPasswordVerified = await gameAPI.verifyGamePassword(gameData);
     setIsPasswordVerified(isPasswordVerified);
   };
 
@@ -36,9 +36,9 @@ const VerifyRoomPassword = ({ roomId, name, setIsPasswordVerified }: VerifyRoomP
         <label className="mr-12 font-bold text-gray-700">Password:</label>
         <input 
           type="text" 
-          placeholder='Enter the room password'  
+          placeholder="Enter the game's password"  
           className="flex-1 shadow-sm bg-gray-50 border border-gray-300 rounded-lg outline-none p-3" 
-          onChange={ event => setRoomData({ ...roomData, password: event.target.value }) }
+          onChange={ event => setGameData({ ...gameData, password: event.target.value }) }
           />
       </div>
 
@@ -48,4 +48,4 @@ const VerifyRoomPassword = ({ roomId, name, setIsPasswordVerified }: VerifyRoomP
     </form>
   )
 }
-export default VerifyRoomPassword
+export default VerifyGamePassword

@@ -1,7 +1,7 @@
 import { v4 as uuidv4 } from 'uuid';
 import { Player } from 'src/player/entities/player.model';
 
-export class Room {
+export class Game {
   public id: string;
 
   public name: string;
@@ -25,11 +25,11 @@ export class Room {
     this.participants = new Array<Player>();
   }
 
-  public joinRoom = (player: Player): void => {
+  public joinGame = (player: Player): void => {
     this.participants.push(player);
   };
 
-  public leaveRoom = (player: Player): void => {
+  public leaveGame = (player: Player): void => {
     this.participants = this.participants.filter((p) => p.id !== player.id);
   };
 }

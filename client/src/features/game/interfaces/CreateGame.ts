@@ -1,4 +1,4 @@
-export interface CreateRoom {
+export interface CreateGame {
   name: string;
 
   password: string;

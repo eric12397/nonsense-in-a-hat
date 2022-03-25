@@ -1,6 +1,6 @@
 import { Player } from 'src/player/entities/player.model';
 
-export class RoomDTO {
+export class GameDTO {
   public id: string;
 
   public name: string;

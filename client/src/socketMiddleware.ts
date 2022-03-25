@@ -1,8 +1,8 @@
 import { AnyAction, Dispatch, Middleware, MiddlewareAPI } from 'redux';
 import { RootState } from './app/store';
 import { io, Socket } from "socket.io-client";
-import { removeRoom, updateRoom } from './features/room/roomSlice';
-import { Room } from './features/room/interfaces/Room';
+import { removeGame, updateGame } from './features/game/gameSlice';
+import { Game } from './features/game/interfaces/Game';
 
 export const socketMiddleware: Middleware = (storeAPI: MiddlewareAPI<Dispatch<AnyAction>, RootState>) => {
   
@@ -19,25 +19,25 @@ export const socketMiddleware: Middleware = (storeAPI: MiddlewareAPI<Dispatch<An
         });
         
         // subscribe to listeners
-        socket.on('joinRoomSuccess', (data: Room) => {
-          storeAPI.dispatch(updateRoom(data));
+        socket.on('joinGameSuccess', (data: Game) => {
+          storeAPI.dispatch(updateGame(data));
         });
 
-        socket.on('leaveRoomSuccess', (data: Room) => {
-          storeAPI.dispatch(updateRoom(data));
+        socket.on('leaveGameSuccess', (data: Game) => {
+          storeAPI.dispatch(updateGame(data));
         });
 
-        socket.on('hostLeftRoom', (roomId: string) => {
-          storeAPI.dispatch(removeRoom(roomId));
+        socket.on('hostLeftGame', (gameId: string) => {
+          storeAPI.dispatch(removeGame(gameId));
         });
         break;
       }
-      case "rooms/join": {
-        socket.emit("joinRoom", action.payload);
+      case "games/join": {
+        socket.emit("joinGame", action.payload);
         break;
       }
-      case "rooms/leave": {
-        socket.emit("leaveRoom", action.payload);
+      case "games/leave": {
+        socket.emit("leaveGame", action.payload);
         break;
       }
     }

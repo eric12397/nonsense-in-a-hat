@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Modal from '../../../components/Modal';
-import { Room } from '../interfaces/Room';
-import VerifyRoomPassword from './VerifyRoomPassword';
+import { Game } from '../interfaces/Game';
+import VerifyGamePassword from './VerifyGamePassword';
 
-interface RoomItemProps {
-  room: Room;
+interface GameItemProps {
+  game: Game;
   host: any;
 };
 
-const RoomItem = ({ room, host }: RoomItemProps) => {
+const GameItem = ({ game, host }: GameItemProps) => {
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
   const [isPasswordVerified, setIsPasswordVerified] = useState(false);
@@ -23,16 +23,16 @@ const RoomItem = ({ room, host }: RoomItemProps) => {
 
   useEffect(() => {
     if (isPasswordVerified) {
-      navigate(`/rooms/${room.id}`);
+      navigate(`/games/${game.id}`);
     }
   }, [isPasswordVerified]);
 
   return (
     <div className='bg-white bg-opacity-80 shadow-md'>
       <Modal isOpen={ isOpen } toggle={ toggleModal } >
-        <VerifyRoomPassword 
-          roomId={ room.id }
-          name={ room.name } 
+        <VerifyGamePassword 
+          gameId={ game.id }
+          name={ game.name } 
           setIsPasswordVerified={ setIsPasswordVerified }
         />
       </Modal>
@@ -44,7 +44,7 @@ const RoomItem = ({ room, host }: RoomItemProps) => {
         />
 
         <div className='flex flex-col'>
-          <h3 className="font-semibold text-lg text-midnight">{ room.name }</h3>
+          <h3 className="font-semibold text-lg text-midnight">{ game.name }</h3>
 
           <div className='flex flex-row flex-wrap mt-5'>
             <div className='mr-20'>
@@ -54,21 +54,21 @@ const RoomItem = ({ room, host }: RoomItemProps) => {
 
             <div className='mr-20'>
               <h5 className='font-semibold text-lg text-midnight'>Capacity:</h5>
-              <p>{ room.currentPlayerCount } / { room.maxPlayersAllowed }</p>
+              <p>{ game.currentPlayerCount } / { game.maxPlayersAllowed }</p>
             </div>
             
             <div className='mr-20'>
               <h5 className='font-semibold text-lg text-midnight'>Mode:</h5>
-              <p>{ room.gameMode }</p>
+              <p>{ game.gameMode }</p>
             </div>
 
             <div className='mr-20'>
               <h5 className='font-semibold text-lg text-midnight'>Status:</h5>
-              <p>{ room.isGameInProgress ? "In Progress" : "Waiting" }</p>
+              <p>{ game.isGameInProgress ? "In Progress" : "Waiting" }</p>
             </div>
 
             <div>
-              { !room.isGameInProgress ? 
+              { !game.isGameInProgress ? 
               <button className="py-3 px-12 bg-salmon text-white rounded" onClick={ handleJoin }>Join</button> 
               : "" }
             </div>
@@ -79,4 +79,4 @@ const RoomItem = ({ room, host }: RoomItemProps) => {
   )
 }
 
-export default RoomItem
+export default GameItem

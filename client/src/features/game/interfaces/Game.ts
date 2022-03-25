@@ -1,6 +1,6 @@
 import { Player } from "../../player/interfaces/Player";
 
-export interface Room {
+export interface Game {
   id: string;
 
   name: string;

@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import { CreateRoom } from '../interfaces/CreateRoom';
-import { createRoom } from '../roomSlice';
+import { CreateGame } from '../interfaces/CreateGame';
+import { createGame } from '../gameSlice';
 import { useAppDispatch } from '../../../hooks/redux';
 import { useNavigate } from 'react-router-dom';
 
-const initialRoomData: CreateRoom = {
+const initialGameData: CreateGame = {
   name: "",
   password: "",
   hostId: "",
@@ -13,15 +13,15 @@ const initialRoomData: CreateRoom = {
   mode: "Classic"
 }
 
-const HostRoom = () => {
-  const [roomData, setRoomData] = useState<CreateRoom>(initialRoomData);
+const HostGame = () => {
+  const [gameData, setGameData] = useState<CreateGame>(initialGameData);
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
   const submitForm = async (event: any) => {
     event.preventDefault();
-    const { id } = await dispatch(createRoom(roomData)).unwrap();
-    navigate(`/rooms/${id}`);
+    const { id } = await dispatch(createGame(gameData)).unwrap();
+    navigate(`/games/${id}`);
   }
 
   return (
@@ -32,7 +32,7 @@ const HostRoom = () => {
           type="text" 
           placeholder='Enter a unique room name'  
           className="flex-1 shadow-sm bg-gray-50 border border-gray-300 rounded-lg outline-none p-3" 
-          onChange={ event => setRoomData({ ...roomData, name: event.target.value }) }
+          onChange={ event => setGameData({ ...gameData, name: event.target.value }) }
           />
       </div>
 
@@ -42,7 +42,7 @@ const HostRoom = () => {
           type="text" 
           placeholder='Create a password'
           className="flex-1 shadow-sm bg-gray-50 border border-gray-300 rounded-lg outline-none p-3" 
-          onChange={ event => setRoomData({ ...roomData, password: event.target.value }) }
+          onChange={ event => setGameData({ ...gameData, password: event.target.value }) }
           />
       </div>
 
@@ -51,7 +51,7 @@ const HostRoom = () => {
           <label className="w-20 mr-16 font-bold">Max players:</label>
           <select
             className="shadow-sm bg-gray-50 border border-gray-300 rounded-lg outline-none p-3" 
-            onChange={ event => setRoomData({ ...roomData, maxPlayersAllowed: parseInt(event.target.value) }) }
+            onChange={ event => setGameData({ ...gameData, maxPlayersAllowed: parseInt(event.target.value) }) }
             >
               <option>2</option>
               <option>3</option>
@@ -65,7 +65,7 @@ const HostRoom = () => {
           <label className="w-20 mr-16 font-bold">Number of rounds:</label>
           <select
             className="shadow-sm bg-gray-50 border border-gray-300 rounded-lg outline-none p-3" 
-            onChange={ event => setRoomData({ ...roomData, rounds: parseInt(event.target.value) }) }
+            onChange={ event => setGameData({ ...gameData, rounds: parseInt(event.target.value) }) }
             >
               <option>5</option>
               <option>10</option>
@@ -83,7 +83,7 @@ const HostRoom = () => {
                 name="mode"
                 value="Classic"
                 checked={true}
-                onChange={ event => setRoomData({ ...roomData, mode: event.target.value }) }
+                onChange={ event => setGameData({ ...gameData, mode: event.target.value }) }
               />
               Classic
             </label>
@@ -95,7 +95,7 @@ const HostRoom = () => {
                 type="radio"
                 name="mode"
                 value="Quiplash"
-                onChange={ event => setRoomData({ ...roomData, mode: event.target.value }) }
+                onChange={ event => setGameData({ ...gameData, mode: event.target.value }) }
               />
               Quiplash
             </label>
@@ -104,10 +104,10 @@ const HostRoom = () => {
       </div>
 
       <div className="text-right">
-        <button className="py-4 px-16 bg-salmon text-white rounded" onClick={ submitForm }>Create room</button> 
+        <button className="py-4 px-16 bg-salmon text-white rounded" onClick={ submitForm }>Create game</button> 
       </div>
     </div>
   )
 }
 
-export default HostRoom
+export default HostGame

@@ -1,12 +1,12 @@
 import { configureStore } from '@reduxjs/toolkit';
 import authReducer from '../features/auth/authSlice';
-import roomsReducer from '../features/room/roomSlice';
+import gamesReducer from '../features/game/gameSlice';
 import { socketMiddleware } from '../socketMiddleware';
 
 export const store = configureStore({
   reducer: {
     auth: authReducer,
-    rooms: roomsReducer,
+    games: gamesReducer,
   },
   middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(socketMiddleware)
 })
