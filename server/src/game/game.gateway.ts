@@ -40,12 +40,21 @@ export class GameGateway {
     if (game.host.id === playerId) {
       // if host leaves, all other players have to leave
       socket.to(game.id).emit('hostLeftGame', gameId);
-    } else if (game.participants.length === 0) {
+    } else if (game.players.length === 0) {
       // have to wait for last player to leave before deleting game
       this._gameService.deleteGame(game.id);
     } else {
       // otherwise, signal that a player left the game
       socket.to(game.id).emit('leaveGameSuccess', game);
     }
+  }
+
+  @SubscribeMessage('submitScript')
+  public async submitScript(
+    @ConnectedSocket() socket: MySocket,
+    @MessageBody('script') script: string,
+  ) {
+    this._gameService.submitScript(socket.game, socket.player, script);
+    this.server.in(socket.game).emit('submitScriptSuccess');
   }
 }

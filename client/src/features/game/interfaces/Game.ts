@@ -5,9 +5,13 @@ export interface Game {
 
   name: string;
 
-  host: any;
+  board: GameBoard;
 
-  participants: Player[];
+  players: Player[];
+
+  host: Player;
+
+  maxRounds: number;
 
   currentPlayerCount: number;
 
@@ -17,3 +21,32 @@ export interface Game {
 
   isGameInProgress: boolean;
 }
+
+export interface GameBoard {
+  players: PlayerState[];
+
+  currentRound: number;
+
+  howToPlay: string;
+}
+
+export interface PlayerState {
+  player: Player;
+
+  status: string;
+
+  script: NonsensicalScript;
+
+  score: number;
+  
+  votes: number;
+}
+
+export interface NonsensicalScript {
+  id: string;
+
+  text: string;
+
+  playerId: string;
+}
+

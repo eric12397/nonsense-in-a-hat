@@ -82,4 +82,9 @@ export const leaveGame = (gameId: string, playerId: string): AnyAction => ({
   payload: { gameId, playerId }
 });
 
+export const submitScript = (script: string): AnyAction => ({
+  type: "games/submit-script",
+  payload: { script }
+});
+
 export default gameSlice.reducer;

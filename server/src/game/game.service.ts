@@ -3,6 +3,9 @@ import { PlayerService } from 'src/player/player.service';
 import { Game } from './entities/game.model';
 import { GameDTO } from './dto/game.dto';
 import { CreateGameDTO } from './dto/createGame.dto';
+import { GameFactory } from './entities/gameFactory';
+import { NonsensicalScript } from './entities/script.model';
+import { SubmitScript } from './actions';
 
 @Injectable()
 export class GameService {
@@ -20,13 +23,13 @@ export class GameService {
     const games = Array.from<Game>(this._games.values());
 
     return games.map((game) => {
-      const { id, host, name, participants, maxPlayersAllowed, gameMode, isGameInProgress } = game;
+      const { id, host, name, players, maxPlayersAllowed, gameMode, isGameInProgress } = game;
 
       const gameDTO = new GameDTO();
       gameDTO.id = id;
       gameDTO.host = host;
       gameDTO.name = name;
-      gameDTO.currentPlayerCount = participants.length;
+      gameDTO.currentPlayerCount = players.length;
       gameDTO.maxPlayersAllowed = maxPlayersAllowed;
       gameDTO.gameMode = gameMode;
       gameDTO.isGameInProgress = isGameInProgress;
@@ -40,12 +43,12 @@ export class GameService {
 
     const host = this._playerService.getPlayerById(hostId);
 
-    const newGame = new Game();
+    const newGame = GameFactory.createGame(mode);
     newGame.name = name;
     newGame.host = host;
     newGame.maxPlayersAllowed = maxPlayersAllowed;
     newGame.password = password;
-    newGame.rounds = rounds;
+    newGame.maxRounds = rounds;
     newGame.gameMode = mode;
 
     this._games.set(newGame.id, newGame);
@@ -71,5 +74,14 @@ export class GameService {
 
     game.leaveGame(player);
     return game;
+  };
+
+  public submitScript = (gameId: string, playerId: string, text: string): void => {
+    const script = new NonsensicalScript();
+    script.playerId = playerId;
+    script.text = text;
+
+    const game = this.getGameById(gameId);
+    game.executeAction(new SubmitScript(script));
   };
 }
