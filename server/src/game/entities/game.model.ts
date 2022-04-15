@@ -1,14 +1,15 @@
 import { v4 as uuidv4 } from 'uuid';
 import { Player } from 'src/player/entities/player.model';
 import { NonsensicalScript } from './script.model';
-import { GameAction } from '../actions';
+import { GameAction } from '../actions/gameAction';
+import { GameActionResponse, Status } from '../actions/gameActionResponse';
 
 export class Game {
   public id: string;
 
   public name: string;
 
-  public board: GameBoard;
+  public board: GameboardState;
 
   public players: Player[] = new Array<Player>();
 
@@ -16,15 +17,13 @@ export class Game {
 
   public maxPlayersAllowed: number;
 
-  public maxRounds: number;
-
   public gameMode: string;
 
   public isGameInProgress: boolean;
 
   public password: string;
 
-  constructor(mode: GameBoard) {
+  constructor(mode: GameboardState) {
     this.id = uuidv4();
     this.board = mode;
   }
@@ -37,27 +36,41 @@ export class Game {
     this.players = this.players.filter((p) => p.id !== player.id);
   };
 
-  public executeAction(action: GameAction<GameBoard>) {
+  public executeAction(action: GameAction<GameboardState>): GameActionResponse {
+    const error = action.isValid(this.board);
+
+    if (error) {
+      return new GameActionResponse(Status.Failure, error);
+    }
+
     action.execute(this.board);
+    return new GameActionResponse(Status.Success, null, this);
   }
 }
 
-export abstract class GameBoard {
-  abstract howToPlay: string;
+export interface GameboardState {
+  maxRounds: number;
 
-  abstract initialize: (players: Player[]) => void;
+  currentRound: number;
+
+  howToPlay: string;
+
+  initialize: (players: Player[]) => void;
 }
 
-export class ClassicMode implements GameBoard {
+export class ClassicMode implements GameboardState {
   public hat: NonsensicalScript[] = new Array<NonsensicalScript>();
 
   public players: PlayerState[] = new Array<PlayerState>();
 
   public winner: Player;
 
+  public maxRounds: number;
+
   public currentRound: number;
 
-  public howToPlay = 'Please submit a script below.';
+  public howToPlay =
+    'Please submit a script below. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum';
 
   public initialize = (players: Player[]) => {
     this.players = players.map((p) => {

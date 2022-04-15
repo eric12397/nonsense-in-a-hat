@@ -7,6 +7,7 @@ import {
 } from '@nestjs/websockets';
 import { Server, Socket } from 'socket.io';
 import { MySocket } from 'src/interfaces/mySocket';
+import { GameActionResponse } from './actions/gameActionResponse';
 import { GameService } from './game.service';
 
 @WebSocketGateway({ cors: true })
@@ -53,8 +54,8 @@ export class GameGateway {
   public async submitScript(
     @ConnectedSocket() socket: MySocket,
     @MessageBody('script') script: string,
-  ) {
-    this._gameService.submitScript(socket.game, socket.player, script);
-    this.server.in(socket.game).emit('submitScriptSuccess');
+  ): Promise<void> {
+    const res = this._gameService.submitScript(socket.game, socket.player, script);
+    this.server.in(socket.game).emit('submitScriptResponse', res);
   }
 }

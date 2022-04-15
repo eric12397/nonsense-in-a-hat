@@ -11,8 +11,6 @@ export interface Game {
 
   host: Player;
 
-  maxRounds: number;
-
   currentPlayerCount: number;
 
   maxPlayersAllowed: number;
@@ -23,7 +21,11 @@ export interface Game {
 }
 
 export interface GameBoard {
+  hat: NonsensicalScript[];
+  
   players: PlayerState[];
+
+  maxRounds: number;
 
   currentRound: number;
 

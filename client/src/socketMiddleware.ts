@@ -3,6 +3,7 @@ import { RootState } from './app/store';
 import { io, Socket } from "socket.io-client";
 import { removeGame, updateGame } from './features/game/gameSlice';
 import { Game } from './features/game/interfaces/Game';
+import { GameActionResponse, Status } from './features/game/interfaces/GameActionResponse';
 
 export const socketMiddleware: Middleware = (storeAPI: MiddlewareAPI<Dispatch<AnyAction>, RootState>) => {
   
@@ -27,8 +28,8 @@ export const socketMiddleware: Middleware = (storeAPI: MiddlewareAPI<Dispatch<An
           storeAPI.dispatch(updateGame(data));
         });
 
-        socket.on('submitScriptSuccess', () => {
-          // storeAPI.dispatch();
+        socket.on('submitScriptResponse', (res: GameActionResponse) => {
+          storeAPI.dispatch(updateGame(res.gameInstance));
         });
 
         socket.on('hostLeftGame', (gameId: string) => {

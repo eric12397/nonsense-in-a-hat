@@ -5,7 +5,8 @@ import { GameDTO } from './dto/game.dto';
 import { CreateGameDTO } from './dto/createGame.dto';
 import { GameFactory } from './entities/gameFactory';
 import { NonsensicalScript } from './entities/script.model';
-import { SubmitScript } from './actions';
+import { SubmitScript } from './actions/gameAction';
+import { GameActionResponse } from './actions/gameActionResponse';
 
 @Injectable()
 export class GameService {
@@ -48,7 +49,7 @@ export class GameService {
     newGame.host = host;
     newGame.maxPlayersAllowed = maxPlayersAllowed;
     newGame.password = password;
-    newGame.maxRounds = rounds;
+    newGame.board.maxRounds = rounds;
     newGame.gameMode = mode;
 
     this._games.set(newGame.id, newGame);
@@ -76,12 +77,12 @@ export class GameService {
     return game;
   };
 
-  public submitScript = (gameId: string, playerId: string, text: string): void => {
+  public submitScript = (gameId: string, playerId: string, text: string): GameActionResponse => {
     const script = new NonsensicalScript();
     script.playerId = playerId;
     script.text = text;
 
     const game = this.getGameById(gameId);
-    game.executeAction(new SubmitScript(script));
+    return game.executeAction(new SubmitScript(script, playerId));
   };
 }
