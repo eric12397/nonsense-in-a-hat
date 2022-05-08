@@ -87,4 +87,9 @@ export const submitScript = (script: string): AnyAction => ({
   payload: { script }
 });
 
+export const startGame = (gameId: string): AnyAction => ({
+  type: "games/start",
+  payload: { gameId }
+});
+
 export default gameSlice.reducer;

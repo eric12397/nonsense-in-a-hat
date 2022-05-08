@@ -58,4 +58,13 @@ export class GameGateway {
     const res = this._gameService.submitScript(socket.game, socket.player, script);
     this.server.in(socket.game).emit('submitScriptResponse', res);
   }
+
+  @SubscribeMessage('startGame')
+  public async startGame(
+    @ConnectedSocket() socket: MySocket,
+    @MessageBody('script') script: string,
+  ): Promise<void> {
+    const res = this._gameService.initializeGame(socket.game);
+    this.server.in(socket.game).emit('startGameResponse', res);
+  }
 }

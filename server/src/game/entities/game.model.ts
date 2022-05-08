@@ -36,7 +36,7 @@ export class Game {
     this.players = this.players.filter((p) => p.id !== player.id);
   };
 
-  public executeAction(action: GameAction<GameboardState>): GameActionResponse {
+  public tryExecuteAction(action: GameAction<GameboardState>): GameActionResponse {
     const error = action.isValid(this.board);
 
     if (error) {

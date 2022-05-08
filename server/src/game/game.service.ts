@@ -5,7 +5,7 @@ import { GameDTO } from './dto/game.dto';
 import { CreateGameDTO } from './dto/createGame.dto';
 import { GameFactory } from './entities/gameFactory';
 import { NonsensicalScript } from './entities/script.model';
-import { SubmitScript } from './actions/gameAction';
+import { InitGameAction, SubmitScriptAction } from './actions/gameAction';
 import { GameActionResponse } from './actions/gameActionResponse';
 
 @Injectable()
@@ -83,6 +83,11 @@ export class GameService {
     script.text = text;
 
     const game = this.getGameById(gameId);
-    return game.executeAction(new SubmitScript(script, playerId));
+    return game.tryExecuteAction(new SubmitScriptAction(script, playerId));
+  };
+
+  public initializeGame = (gameId: string): GameActionResponse => {
+    const game = this.getGameById(gameId);
+    return game.tryExecuteAction(new InitGameAction(game.players));
   };
 }

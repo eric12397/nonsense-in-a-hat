@@ -1,3 +1,4 @@
+import { Player } from 'src/player/entities/player.model';
 import { ClassicMode, GameboardState } from '../entities/game.model';
 import { NonsensicalScript } from '../entities/script.model';
 
@@ -7,7 +8,7 @@ export interface GameAction<T extends GameboardState> {
   isValid: (state: T) => string;
 }
 
-export class SubmitScript implements GameAction<ClassicMode> {
+export class SubmitScriptAction implements GameAction<ClassicMode> {
   constructor(private _script: NonsensicalScript, private _playerId: string) {}
 
   public execute = (state: ClassicMode): void => {
@@ -27,5 +28,17 @@ export class SubmitScript implements GameAction<ClassicMode> {
     }
 
     return error;
+  };
+}
+
+export class InitGameAction implements GameAction<GameboardState> {
+  constructor(private _players: Player[]) {}
+
+  public execute = (state: GameboardState): void => {
+    state.initialize(this._players);
+  };
+
+  public isValid = (state: GameboardState): string => {
+    return '';
   };
 }

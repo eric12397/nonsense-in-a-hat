@@ -28,12 +28,16 @@ export const socketMiddleware: Middleware = (storeAPI: MiddlewareAPI<Dispatch<An
           storeAPI.dispatch(updateGame(data));
         });
 
+        socket.on('hostLeftGame', (gameId: string) => {
+          storeAPI.dispatch(removeGame(gameId));
+        });
+
         socket.on('submitScriptResponse', (res: GameActionResponse) => {
           storeAPI.dispatch(updateGame(res.gameInstance));
         });
 
-        socket.on('hostLeftGame', (gameId: string) => {
-          storeAPI.dispatch(removeGame(gameId));
+        socket.on('startGameResponse', (res: GameActionResponse) => {
+          storeAPI.dispatch(updateGame(res.gameInstance));
         });
         break;
       }
@@ -47,6 +51,10 @@ export const socketMiddleware: Middleware = (storeAPI: MiddlewareAPI<Dispatch<An
       }
       case "games/submit-script": {
         socket.emit("submitScript", action.payload);
+        break;
+      }
+      case "games/start": {
+        socket.emit("startGame", action.payload);
         break;
       }
     }
