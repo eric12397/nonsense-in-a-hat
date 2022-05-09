@@ -49,6 +49,7 @@ export class Game {
 }
 
 export interface GameboardState {
+  // Each game mode implements GameboardState with their own logic/rules.
   maxRounds: number;
 
   currentRound: number;
@@ -77,6 +78,8 @@ export class ClassicMode implements GameboardState {
       const state = new PlayerState();
       state.player = p;
       state.status = 'Waiting';
+      state.score = 0;
+      state.votes = 0;
       return state;
     });
 

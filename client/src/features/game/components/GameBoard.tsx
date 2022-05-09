@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import SideBar from '../../../components/SideBar';
 import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
 import { selectMyPlayer } from '../../auth/authSlice';
-import { joinGame, leaveGame, selectGameById, selectGameRemovedFlag, startGame, updateGameRemovedFlag } from '../gameSlice';
+import { joinGame, leaveGame, selectGameById, selectGameRemovedFlag, startGame, updateGameRemovedFlag, selectGameActiveFlag } from '../gameSlice';
 import { useNavigate, useParams } from 'react-router-dom';
 import Modal from '../../../components/Modal';
 import PreGameLobby from './PreGameLobby';
@@ -10,9 +9,9 @@ import ActiveGame from './ActiveGame';
 
 const GameBoard = () => {
   const { id } = useParams(); // game id
-  const [isGameActive, setIsGameActive] = useState(false);
 
   const game = useAppSelector(state => selectGameById(state, id!));
+  const isGameActive = useAppSelector(selectGameActiveFlag);
   const isGameRemoved = useAppSelector(selectGameRemovedFlag);
   const myPlayer = useAppSelector(selectMyPlayer);
 
@@ -26,7 +25,6 @@ const GameBoard = () => {
 
   const handleStart = async (): Promise<void> => {
     await dispatch(startGame(game?.id!));
-    setIsGameActive(true);
   }
 
   useEffect(() => {
@@ -52,25 +50,8 @@ const GameBoard = () => {
         </div>
       </Modal>
 
-      <SideBar>
-        <div className="p-3 w-full">
-          <ul className="relative">
-          { game?.players && game?.players.map(p => (
-            <li className="relative flex items-center p-3 text-white">
-              <img
-                className="w-20 mr-4"
-                src={ p.avatar }
-                alt=""
-              /> 
-              <span>{ p.name }</span>
-            </li>
-          ))} 
-          </ul>
-        </div>
-      </SideBar>
-      
       { isGameActive ? 
-        <ActiveGame /> : <PreGameLobby game={ game! } myPlayer={ myPlayer } startGameHandler={ handleStart }/> }
+        <ActiveGame game={ game! }/> : <PreGameLobby game={ game! } myPlayer={ myPlayer } startGameHandler={ handleStart }/> }
     </div>
   )
 }
