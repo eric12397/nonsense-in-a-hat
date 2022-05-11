@@ -5,9 +5,8 @@ import {
   WebSocketGateway,
   WebSocketServer,
 } from '@nestjs/websockets';
-import { Server, Socket } from 'socket.io';
+import { Server } from 'socket.io';
 import { MySocket } from 'src/interfaces/mySocket';
-import { GameActionResponse } from './actions/gameActionResponse';
 import { GameService } from './game.service';
 
 @WebSocketGateway({ cors: true })
@@ -41,6 +40,7 @@ export class GameGateway {
     if (game.host.id === playerId) {
       // if host leaves, all other players have to leave
       socket.to(game.id).emit('hostLeftGame', gameId);
+      this._gameService.deleteGame(game.id);
     } else if (game.players.length === 0) {
       // have to wait for last player to leave before deleting game
       this._gameService.deleteGame(game.id);
