@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import MainContent from '../../../components/MainContent';
 import SideBar from '../../../components/SideBar';
 import { useAppDispatch } from '../../../hooks/redux';
 import { Player } from '../../player/interfaces/Player';
@@ -43,7 +44,7 @@ const PreGameLobby = ({ game, myPlayer, startGameHandler }: PreGameLobbyProps) =
         </div>
       </SideBar>
 
-      <div className='w-4/5 p-6'>
+      <MainContent>
         <div className='mb-10'>
           <h1 className='text-2xl font-extrabold'>Pre-Game Lobby</h1>
         </div>
@@ -90,7 +91,7 @@ const PreGameLobby = ({ game, myPlayer, startGameHandler }: PreGameLobbyProps) =
             </div>
           }
         </div>
-      </div>
+      </MainContent>
     </>
   )
 }

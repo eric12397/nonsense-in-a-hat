@@ -1,4 +1,5 @@
 import React from 'react'
+import MainContent from '../../../components/MainContent';
 import SideBar from '../../../components/SideBar'
 import { Game } from '../interfaces/Game';
 
@@ -28,8 +29,10 @@ const ActiveGame = ({ game }: ActiveGameProps) => {
           </ul>
         </div>
       </SideBar>
-
-      <div>Game has started!</div>
+      
+      <MainContent>
+        <div>Game has started!</div>
+      </MainContent>
     </>
   )
 }
