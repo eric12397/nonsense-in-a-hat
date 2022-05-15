@@ -1,7 +1,7 @@
 import { AnyAction, Dispatch, Middleware, MiddlewareAPI } from 'redux';
 import { RootState } from './app/store';
 import { io, Socket } from "socket.io-client";
-import { initializeGame, removeGame, updateGame } from './features/game/gameSlice';
+import { removeGame, updateGame } from './features/game/gameSlice';
 import { Game } from './features/game/interfaces/Game';
 import { GameActionResponse, Status } from './features/game/interfaces/GameActionResponse';
 
@@ -37,7 +37,7 @@ export const socketMiddleware: Middleware = (storeAPI: MiddlewareAPI<Dispatch<An
         });
 
         socket.on('startGameResponse', (res: GameActionResponse) => {
-          storeAPI.dispatch(initializeGame(res.gameInstance));
+          storeAPI.dispatch(updateGame(res.gameInstance));
         });
         break;
       }
@@ -49,7 +49,7 @@ export const socketMiddleware: Middleware = (storeAPI: MiddlewareAPI<Dispatch<An
         socket.emit("leaveGame", action.payload);
         break;
       }
-      case "games/submit-script": {
+      case "games/submitScript": {
         socket.emit("submitScript", action.payload);
         break;
       }

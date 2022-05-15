@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
 import { selectMyPlayer } from '../../auth/authSlice';
-import { joinGame, leaveGame, selectGameById, selectGameRemovedFlag, startGame, updateGameRemovedFlag, selectGameActiveFlag } from '../gameSlice';
+import { joinGame, leaveGame, selectGameById, selectGameRemovedFlag, startGame, updateGameRemovedFlag } from '../gameSlice';
 import { useNavigate, useParams } from 'react-router-dom';
 import Modal from '../../../components/Modal';
 import PreGameLobby from './PreGameLobby';
@@ -11,7 +11,6 @@ const GameBoard = () => {
   const { id } = useParams(); // game id
 
   const game = useAppSelector(state => selectGameById(state, id!));
-  const isGameActive = useAppSelector(selectGameActiveFlag);
   const isGameRemoved = useAppSelector(selectGameRemovedFlag);
   const myPlayer = useAppSelector(selectMyPlayer);
 
@@ -50,8 +49,9 @@ const GameBoard = () => {
         </div>
       </Modal>
 
-      { isGameActive ? 
-        <ActiveGame game={ game! }/> : <PreGameLobby game={ game! } myPlayer={ myPlayer } startGameHandler={ handleStart }/> }
+      { game?.isGameInProgress ? 
+        <ActiveGame game={ game! } myPlayer={ myPlayer }/> : 
+        <PreGameLobby game={ game! } myPlayer={ myPlayer } startGameHandler={ handleStart }/> }
     </div>
   )
 }

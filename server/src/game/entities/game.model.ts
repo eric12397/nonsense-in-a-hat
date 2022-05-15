@@ -74,16 +74,29 @@ export class ClassicMode implements GameboardState {
     'Please submit a script below. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum';
 
   public initialize = (players: Player[]) => {
+    // Choose player at random to go first
+    const randomPlayer = players[Math.floor(Math.random() * players.length)];
+
     this.players = players.map((p) => {
       const state = new PlayerState();
       state.player = p;
-      state.status = 'Waiting';
       state.score = 0;
       state.votes = 0;
+      state.status = p.id === randomPlayer.id ? 'Active' : 'Waiting';
       return state;
     });
 
+    this.players.find((p) => p.status === 'Active').script = this.selectRandomScript();
     this.currentRound = 1;
+  };
+
+  private selectRandomScript = (): NonsensicalScript => {
+    // Shuffle hat before popping off script
+    for (let i = this.hat.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [this.hat[i], this.hat[j]] = [this.hat[j], this.hat[i]];
+    }
+    return this.hat.pop();
   };
 }
 

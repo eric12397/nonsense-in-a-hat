@@ -8,14 +8,12 @@ import { Game } from './interfaces/Game';
 // Define a type for the slice state
 interface GamesState {
   games: Game[],
-  isGameActive: boolean;
   isGameRemoved: boolean;
 }
 
 // Define the initial state using that type
 const initialState: GamesState = {
   games: [],
-  isGameActive: false,
   isGameRemoved: false,
 }
 
@@ -33,11 +31,7 @@ export const gameSlice = createSlice({
     removeGame: (state, action: PayloadAction<string>) => {
       state.isGameRemoved = true;
       state.games = state.games.filter(r => r.id !== action.payload);
-    },
-    initializeGame: (state, action: PayloadAction<Game>) => {
-      state.isGameActive = true;
-      state.games = state.games.map(r => r.id === action.payload.id ? action.payload : r);
-    },
+    }
   },
   extraReducers: (builder) => {
     builder.addCase(getGames.fulfilled, (state, action: PayloadAction<Game[]>) => {
@@ -70,13 +64,12 @@ export const createGame = createAsyncThunk(
   }
 )
 
-export const { initializeGame, updateGame, removeGame, updateGameRemovedFlag } = gameSlice.actions
+export const { updateGame, removeGame, updateGameRemovedFlag } = gameSlice.actions
 
 // Selectors
 export const selectGames = (state: RootState) => state.games.games;
 export const selectGameById = (state: RootState, id: string) => state.games.games.find(r => r.id === id);
 export const selectGameRemovedFlag = (state: RootState) => state.games.isGameRemoved;
-export const selectGameActiveFlag = (state: RootState) => state.games.isGameActive;
 
 // Action creators
 export const joinGame = (gameId: string, playerId: string): AnyAction => ({
@@ -90,7 +83,7 @@ export const leaveGame = (gameId: string, playerId: string): AnyAction => ({
 });
 
 export const submitScript = (script: string): AnyAction => ({
-  type: "games/submit-script",
+  type: "games/submitScript",
   payload: { script }
 });
 

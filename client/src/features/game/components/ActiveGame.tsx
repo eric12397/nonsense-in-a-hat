@@ -2,12 +2,17 @@ import React from 'react'
 import MainContent from '../../../components/MainContent';
 import SideBar from '../../../components/SideBar'
 import { Game } from '../interfaces/Game';
+import { Player } from '../../player/interfaces/Player';
 
 interface ActiveGameProps {
   game: Game;
+  myPlayer: Player;
 };
 
-const ActiveGame = ({ game }: ActiveGameProps) => {
+const ActiveGame = ({ game, myPlayer }: ActiveGameProps) => {
+  const activePlayer = game?.board?.players.find(p => p.status === "Active");
+
+
   return (
     <>
       <SideBar>
@@ -31,7 +36,17 @@ const ActiveGame = ({ game }: ActiveGameProps) => {
       </SideBar>
       
       <MainContent>
-        <div>Game has started!</div>
+        <div>
+          { myPlayer.id === activePlayer?.player.id ?
+            <div>
+              { activePlayer?.script?.text }
+            </div> 
+            :
+            <div>
+              Please wait your turn...
+            </div> 
+          }
+        </div>
       </MainContent>
     </>
   )

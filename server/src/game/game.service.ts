@@ -88,6 +88,7 @@ export class GameService {
 
   public initializeGame = (gameId: string): GameActionResponse => {
     const game = this.getGameById(gameId);
+    game.isGameInProgress = true;
     return game.tryExecuteAction(new InitGameAction(game.players));
   };
 }
