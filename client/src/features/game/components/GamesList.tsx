@@ -13,13 +13,15 @@ const GamesList = () => {
 
   return (
     <div className='grid grid-cols-1 divide-y divide-silver'>
-      { games && games.map(game => (
-        <GameItem 
-          key={ game.id }
-          game={ game }
-          host={ game.host }
-        ></GameItem> 
-      ))}
+      { games && games.length > 0 ? 
+        games.map(game => (
+          <GameItem 
+            key={ game.id }
+            game={ game }
+            host={ game.host }
+          ></GameItem> 
+        )) 
+        : "No games active. Check back again soon." }
     </div>
   );
 }
