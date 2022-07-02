@@ -21,11 +21,11 @@ export class GameGateway {
     @ConnectedSocket() socket: MySocket,
     @MessageBody('gameId') gameId: string,
     @MessageBody('playerId') playerId: string,
-  ) {
-    const game = this._gameService.joinPlayerToGame(gameId, playerId);
+  ): Promise<void> {
+    const res = this._gameService.joinPlayerToGame(gameId, playerId);
     socket.game = gameId;
-    socket.join(game.id);
-    this.server.in(game.id).emit('joinGameSuccess', game);
+    socket.join(gameId);
+    this.server.in(gameId).emit('joinGameResponse', res);
   }
 
   @SubscribeMessage('leaveGame')
@@ -33,20 +33,17 @@ export class GameGateway {
     @ConnectedSocket() socket: MySocket,
     @MessageBody('gameId') gameId: string,
     @MessageBody('playerId') playerId: string,
-  ) {
-    const game = this._gameService.removePlayerFromGame(gameId, playerId);
+  ): Promise<void> {
+    const res = this._gameService.removePlayerFromGame(gameId, playerId);
     socket.game = null;
 
-    if (game.host.id === playerId) {
+    if (res.gameInstance && res.gameInstance.host.id === playerId) {
       // if host leaves, all other players have to leave
-      socket.to(game.id).emit('hostLeftGame', gameId);
-      this._gameService.deleteGame(game.id);
-    } else if (game.players.length === 0) {
-      // have to wait for last player to leave before deleting game
-      this._gameService.deleteGame(game.id);
+      socket.to(gameId).emit('hostLeftGame', gameId);
+      this._gameService.deleteGame(gameId);
     } else {
       // otherwise, signal that a player left the game
-      socket.to(game.id).emit('leaveGameSuccess', game);
+      socket.to(gameId).emit('leaveGameResponse', res);
     }
   }
 

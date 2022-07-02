@@ -5,8 +5,13 @@ import { GameDTO } from './dto/game.dto';
 import { CreateGameDTO } from './dto/createGame.dto';
 import { GameFactory } from './entities/gameFactory';
 import { NonsensicalScript } from './entities/script.model';
-import { InitGameAction, SubmitScriptAction } from './actions/gameAction';
-import { GameActionResponse } from './actions/gameActionResponse';
+import {
+  InitGameAction,
+  JoinGameAction,
+  LeaveGameAction,
+  SubmitScriptAction,
+} from './actions/gameAction';
+import { GameActionResponse, Status } from './actions/gameActionResponse';
 
 @Injectable()
 export class GameService {
@@ -24,13 +29,13 @@ export class GameService {
     const games = Array.from<Game>(this._games.values());
 
     return games.map((game) => {
-      const { id, host, name, players, maxPlayersAllowed, gameMode, isGameInProgress } = game;
+      const { id, host, name, board, maxPlayersAllowed, gameMode, isGameInProgress } = game;
 
       const gameDTO = new GameDTO();
       gameDTO.id = id;
       gameDTO.host = host;
       gameDTO.name = name;
-      gameDTO.currentPlayerCount = players.length;
+      gameDTO.currentPlayerCount = board.players.length;
       gameDTO.maxPlayersAllowed = maxPlayersAllowed;
       gameDTO.gameMode = gameMode;
       gameDTO.isGameInProgress = isGameInProgress;
@@ -61,20 +66,22 @@ export class GameService {
     return gameId;
   };
 
-  public joinPlayerToGame = (gameId: string, playerId: string): Game => {
+  public joinPlayerToGame = (gameId: string, playerId: string): GameActionResponse => {
     const game = this.getGameById(gameId);
     const player = this._playerService.getPlayerById(playerId);
 
-    game.joinGame(player);
-    return game;
+    return game.tryExecuteAction(new JoinGameAction(player));
   };
 
-  public removePlayerFromGame = (gameId: string, playerId: string): Game => {
+  public removePlayerFromGame = (gameId: string, playerId: string): GameActionResponse => {
     const game = this.getGameById(gameId);
     const player = this._playerService.getPlayerById(playerId);
 
-    game.leaveGame(player);
-    return game;
+    if (game) {
+      return game.tryExecuteAction(new LeaveGameAction(player));
+    }
+
+    return new GameActionResponse(Status.Success, 'Game no longer exists');
   };
 
   public submitScript = (gameId: string, playerId: string, text: string): GameActionResponse => {
@@ -89,6 +96,7 @@ export class GameService {
   public initializeGame = (gameId: string): GameActionResponse => {
     const game = this.getGameById(gameId);
     game.isGameInProgress = true;
-    return game.tryExecuteAction(new InitGameAction(game.players));
+
+    return game.tryExecuteAction(new InitGameAction());
   };
 }

@@ -21,7 +21,7 @@ const GamesList = () => {
             host={ game.host }
           ></GameItem> 
         )) 
-        : "No games active. Check back again soon." }
+        : <p className='font-bold'>No games active. Check back again soon.</p> }
     </div>
   );
 }

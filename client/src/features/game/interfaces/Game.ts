@@ -23,25 +23,13 @@ export interface Game {
 export interface GameBoard {
   hat: NonsensicalScript[];
   
-  players: PlayerState[];
+  players: Player[];
 
   maxRounds: number;
 
   currentRound: number;
 
   howToPlay: string;
-}
-
-export interface PlayerState {
-  player: Player;
-
-  status: string;
-
-  script: NonsensicalScript;
-
-  score: number;
-  
-  votes: number;
 }
 
 export interface NonsensicalScript {

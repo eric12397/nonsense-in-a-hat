@@ -30,7 +30,7 @@ const PreGameLobby = ({ game, myPlayer, startGameHandler }: PreGameLobbyProps) =
       <SideBar>
         <div className="p-3 w-full">
           <ul className="relative">
-          { game?.players && game?.players.map(p => (
+          { game?.board?.players && game?.board?.players.map(p => (
             <li className="relative flex items-center p-3 text-white">
               <img
                 className="w-20 mr-4"

@@ -20,12 +20,12 @@ export const socketMiddleware: Middleware = (storeAPI: MiddlewareAPI<Dispatch<An
         });
         
         // subscribe to listeners
-        socket.on('joinGameSuccess', (data: Game) => {
-          storeAPI.dispatch(updateGame(data));
+        socket.on('joinGameResponse', (res: GameActionResponse) => {
+          storeAPI.dispatch(updateGame(res.gameInstance));
         });
 
-        socket.on('leaveGameSuccess', (data: Game) => {
-          storeAPI.dispatch(updateGame(data));
+        socket.on('leaveGameResponse', (res: GameActionResponse) => {
+          storeAPI.dispatch(updateGame(res.gameInstance));
         });
 
         socket.on('hostLeftGame', (gameId: string) => {

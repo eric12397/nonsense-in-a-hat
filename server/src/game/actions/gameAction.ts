@@ -31,11 +31,33 @@ export class SubmitScriptAction implements GameAction<ClassicMode> {
   };
 }
 
-export class InitGameAction implements GameAction<GameboardState> {
-  constructor(private _players: Player[]) {}
+export class JoinGameAction implements GameAction<GameboardState> {
+  constructor(private _newPlayer: Player) {}
 
   public execute = (state: GameboardState): void => {
-    state.initialize(this._players);
+    state.players.push(this._newPlayer);
+  };
+
+  public isValid = (state: GameboardState): string => {
+    return '';
+  };
+}
+
+export class LeaveGameAction implements GameAction<GameboardState> {
+  constructor(private _newPlayer: Player) {}
+
+  public execute = (state: GameboardState): void => {
+    state.players = state.players.filter((p) => p.id !== this._newPlayer.id);
+  };
+
+  public isValid = (state: GameboardState): string => {
+    return '';
+  };
+}
+
+export class InitGameAction implements GameAction<GameboardState> {
+  public execute = (state: GameboardState): void => {
+    state.initialize();
   };
 
   public isValid = (state: GameboardState): string => {

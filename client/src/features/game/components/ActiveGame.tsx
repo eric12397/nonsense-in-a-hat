@@ -10,7 +10,7 @@ interface ActiveGameProps {
 };
 
 const ActiveGame = ({ game, myPlayer }: ActiveGameProps) => {
-  const activePlayer = game?.board?.players.find(p => p.status === "Active");
+  const activePlayer = game?.board?.players.find(p => p.name === "Active");
 
 
   return (
@@ -22,12 +22,12 @@ const ActiveGame = ({ game, myPlayer }: ActiveGameProps) => {
             <li className="relative flex items-center p-3 text-white">
               <img
                 className="w-20 mr-4"
-                src={ p.player.avatar }
+                src={ p.avatar }
                 alt=""
               />
               <div className='flex flex-col'>
-                <span className='mb-2'>{ p.player.name }</span>
-                <span className='mb-2'>Score: { p.score }</span>
+                <span className='mb-2'>{ p.name }</span>
+                {/* <span className='mb-2'>Score: { p.score }</span> */}
               </div>  
             </li>
           ))} 
@@ -37,9 +37,9 @@ const ActiveGame = ({ game, myPlayer }: ActiveGameProps) => {
       
       <MainContent>
         <div>
-          { myPlayer.id === activePlayer?.player.id ?
+          { myPlayer.id === activePlayer?.id ?
             <div>
-              { activePlayer?.script?.text }
+              {/* { activePlayer?.script?.text } */}
             </div> 
             :
             <div>
