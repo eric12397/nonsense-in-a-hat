@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
 import { selectMyPlayer } from '../../auth/authSlice';
-import { joinGame, leaveGame, selectGameById, selectGameRemovedFlag, startGame, updateGameRemovedFlag } from '../gameSlice';
+import { leaveGame, selectGameById, selectGameRemovedFlag, startGame, updateGameRemovedFlag } from '../gameSlice';
 import { useNavigate, useParams } from 'react-router-dom';
 import Modal from '../../../components/Modal';
 import PreGameLobby from './PreGameLobby';
@@ -23,14 +23,18 @@ const GameBoard = () => {
   }
 
   const handleStart = async (): Promise<void> => {
-    await dispatch(startGame(game?.id!));
+    try {
+      await dispatch(startGame(game?.id!)).unwrap();
+    } catch (err) {
+      // dispatch error message
+      console.log(err);
+    }
+    
   }
 
   useEffect(() => {
-    dispatch(joinGame(id!, myPlayer.id!));
-
     return () => {
-      dispatch(leaveGame(id!, myPlayer.id!))
+      dispatch(leaveGame(id!))
     }
   }, []);
 

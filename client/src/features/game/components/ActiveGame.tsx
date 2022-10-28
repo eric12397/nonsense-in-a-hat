@@ -2,7 +2,7 @@ import React from 'react'
 import MainContent from '../../../components/MainContent';
 import SideBar from '../../../components/SideBar'
 import { Game } from '../interfaces/Game';
-import { Player } from '../../player/interfaces/Player';
+import { ClassicModePlayer, Player } from '../../player/interfaces/Player';
 
 interface ActiveGameProps {
   game: Game;
@@ -10,8 +10,8 @@ interface ActiveGameProps {
 };
 
 const ActiveGame = ({ game, myPlayer }: ActiveGameProps) => {
-  const activePlayer = game?.board?.players.find(p => p.name === "Active");
-
+  const list = game?.board?.players as ClassicModePlayer[];
+  const activePlayer = list.find(p => p.status === "Active");
 
   return (
     <>
@@ -39,7 +39,7 @@ const ActiveGame = ({ game, myPlayer }: ActiveGameProps) => {
         <div>
           { myPlayer.id === activePlayer?.id ?
             <div>
-              {/* { activePlayer?.script?.text } */}
+              { activePlayer?.script?.text }
             </div> 
             :
             <div>

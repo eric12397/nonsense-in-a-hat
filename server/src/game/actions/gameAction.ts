@@ -32,14 +32,22 @@ export class SubmitScriptAction implements GameAction<ClassicMode> {
 }
 
 export class JoinGameAction implements GameAction<GameboardState> {
-  constructor(private _newPlayer: Player) {}
+  constructor(private _newPlayer: Player, private _maxPlayersAllowed) {}
 
   public execute = (state: GameboardState): void => {
     state.players.push(this._newPlayer);
   };
 
   public isValid = (state: GameboardState): string => {
-    return '';
+    let error = '';
+
+    const { players } = state;
+
+    if (players.length >= this._maxPlayersAllowed) {
+      error = 'Game is full.';
+    }
+
+    return error;
   };
 }
 

@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Modal from '../../../components/Modal';
+import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
+import { selectMyPlayer } from '../../auth/authSlice';
+import { joinGame } from '../gameSlice';
 import { Game } from '../interfaces/Game';
 import VerifyGamePassword from './VerifyGamePassword';
 
@@ -11,6 +14,8 @@ interface GameItemProps {
 
 const GameItem = ({ game, host }: GameItemProps) => {
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+
   const [isOpen, setIsOpen] = useState(false);
   const [isPasswordVerified, setIsPasswordVerified] = useState(false);
 
@@ -23,9 +28,18 @@ const GameItem = ({ game, host }: GameItemProps) => {
 
   useEffect(() => {
     if (isPasswordVerified) {
-      navigate(`/games/${game.id}`);
+      const tryJoin = async () => {
+        try {
+          await dispatch(joinGame(game.id!)).unwrap();
+          navigate(`/games/${game.id!}`);
+        } catch (err) {
+          // dispatch error message
+          console.log(err);
+        }
+      } 
+      tryJoin();
     }
-  }, [isPasswordVerified]);
+}, [isPasswordVerified]);
 
   return (
     <div className='bg-white bg-opacity-80 shadow-md'>

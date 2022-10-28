@@ -70,7 +70,7 @@ export class GameService {
     const game = this.getGameById(gameId);
     const player = this._playerService.getPlayerById(playerId);
 
-    return game.tryExecuteAction(new JoinGameAction(player));
+    return game.tryExecuteAction(new JoinGameAction(player, game.maxPlayersAllowed));
   };
 
   public removePlayerFromGame = (gameId: string, playerId: string): GameActionResponse => {
@@ -80,7 +80,6 @@ export class GameService {
     if (game) {
       return game.tryExecuteAction(new LeaveGameAction(player));
     }
-
     return new GameActionResponse(Status.Success, 'Game no longer exists');
   };
 

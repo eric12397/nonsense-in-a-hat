@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { CreateGame } from '../interfaces/CreateGame';
-import { createGame } from '../gameSlice';
+import { createGame, joinGame } from '../gameSlice';
 import { useAppDispatch } from '../../../hooks/redux';
 import { useNavigate } from 'react-router-dom';
+
 
 const initialGameData: CreateGame = {
   name: "",
@@ -15,13 +16,22 @@ const initialGameData: CreateGame = {
 
 const HostGame = () => {
   const [gameData, setGameData] = useState<CreateGame>(initialGameData);
-  const navigate = useNavigate();
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
   const submitForm = async (event: any) => {
     event.preventDefault();
-    const { id } = await dispatch(createGame(gameData)).unwrap();
-    navigate(`/games/${id}`);
+    try {
+      const { id } = await dispatch(createGame(gameData)).unwrap();
+
+      if (id) {
+        await dispatch(joinGame(id)).unwrap();
+        navigate(`/games/${id}`);
+      }
+    } catch (err) {
+      // dispatch error message
+      console.log(err);
+    }
   }
 
   return (

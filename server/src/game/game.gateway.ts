@@ -7,6 +7,7 @@ import {
 } from '@nestjs/websockets';
 import { Server } from 'socket.io';
 import { MySocket } from 'src/interfaces/mySocket';
+import { GameActionResponse, Status } from './actions/gameActionResponse';
 import { GameService } from './game.service';
 
 @WebSocketGateway({ cors: true })
@@ -21,11 +22,16 @@ export class GameGateway {
     @ConnectedSocket() socket: MySocket,
     @MessageBody('gameId') gameId: string,
     @MessageBody('playerId') playerId: string,
-  ): Promise<void> {
+  ): Promise<GameActionResponse> {
     const res = this._gameService.joinPlayerToGame(gameId, playerId);
-    socket.game = gameId;
-    socket.join(gameId);
+
+    if (res.status === Status.Success) {
+      socket.game = gameId;
+      socket.join(gameId);
+    }
+
     this.server.in(gameId).emit('joinGameResponse', res);
+    return res;
   }
 
   @SubscribeMessage('leaveGame')
@@ -51,14 +57,18 @@ export class GameGateway {
   public async submitScript(
     @ConnectedSocket() socket: MySocket,
     @MessageBody('script') script: string,
-  ): Promise<void> {
+  ): Promise<GameActionResponse> {
     const res = this._gameService.submitScript(socket.game, socket.player, script);
+
     this.server.in(socket.game).emit('submitScriptResponse', res);
+    return res;
   }
 
   @SubscribeMessage('startGame')
-  public async startGame(@ConnectedSocket() socket: MySocket): Promise<void> {
+  public async startGame(@ConnectedSocket() socket: MySocket): Promise<GameActionResponse> {
     const res = this._gameService.initializeGame(socket.game);
+
     this.server.in(socket.game).emit('startGameResponse', res);
+    return res;
   }
 }

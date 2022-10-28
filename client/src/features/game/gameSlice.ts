@@ -4,6 +4,8 @@ import { gameAPI } from './api'
 import { CreateGame } from './interfaces/CreateGame'
 import { AnyAction } from 'redux';
 import { Game } from './interfaces/Game';
+import { GameActionResponse, Status } from './interfaces/GameActionResponse';
+import socketService from '../../common/SocketService';
 
 // Define a type for the slice state
 interface GamesState {
@@ -41,6 +43,10 @@ export const gameSlice = createSlice({
     builder.addCase(createGame.fulfilled, (state, action: PayloadAction<Game>) => {
       state.games.push(action.payload);
     });
+
+    builder.addCase(joinGame.fulfilled, (state, action: PayloadAction<Game>) => {
+      state.games = state.games.map(r => r.id === action.payload.id ? action.payload : r);
+    });
   }
 })
 
@@ -64,32 +70,61 @@ export const createGame = createAsyncThunk(
   }
 )
 
+export const joinGame = createAsyncThunk(
+  'games/join',
+  async (gameId: string, { getState, rejectWithValue }) => {
+    const state = getState() as RootState;
+    const playerId = state.auth.myPlayer?.id!;
+
+    const res = await socketService.emit<GameActionResponse>("joinGame", { gameId, playerId });
+
+    if (res.status === Status.Failure) {
+      return rejectWithValue(res.message);
+    }
+    return res.gameInstance;
+  }
+)
+
+export const leaveGame = createAsyncThunk(
+  'games/leave',
+  async (gameId: string, { getState }) => {
+    const state = getState() as RootState;
+    const playerId = state.auth.myPlayer?.id!;
+
+    const res = await socketService.emit<GameActionResponse>("leaveGame", { gameId, playerId });
+    return res.gameInstance;
+  }
+)
+
+export const submitScript = createAsyncThunk(
+  'games/submitScript',
+  async (script: string, { rejectWithValue }) => {
+    const res = await socketService.emit<GameActionResponse>("submitScript", { script });
+
+    if (res.status === Status.Failure) {
+      return rejectWithValue(res.message);
+    }
+    return res.gameInstance;
+  }
+)
+
+export const startGame = createAsyncThunk(
+  'games/start',
+  async (gameId: string, { rejectWithValue }) => {
+    const res = await socketService.emit<GameActionResponse>("startGame", { gameId });
+
+    if (res.status === Status.Failure) {
+      return rejectWithValue(res.message);
+    }
+    return res.gameInstance;
+  }
+)
+
 export const { updateGame, removeGame, updateGameRemovedFlag } = gameSlice.actions
 
 // Selectors
 export const selectGames = (state: RootState) => state.games.games;
 export const selectGameById = (state: RootState, id: string) => state.games.games.find(r => r.id === id);
 export const selectGameRemovedFlag = (state: RootState) => state.games.isGameRemoved;
-
-// Action creators
-export const joinGame = (gameId: string, playerId: string): AnyAction => ({
-  type: "games/join",
-  payload: { gameId, playerId }
-});
-
-export const leaveGame = (gameId: string, playerId: string): AnyAction => ({
-  type: "games/leave",
-  payload: { gameId, playerId }
-});
-
-export const submitScript = (script: string): AnyAction => ({
-  type: "games/submitScript",
-  payload: { script }
-});
-
-export const startGame = (gameId: string): AnyAction => ({
-  type: "games/start",
-  payload: { gameId }
-});
 
 export default gameSlice.reducer;

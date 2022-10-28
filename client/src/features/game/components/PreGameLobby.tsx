@@ -18,10 +18,15 @@ const PreGameLobby = ({ game, myPlayer, startGameHandler }: PreGameLobbyProps) =
   const dispatch = useAppDispatch();
 
   const submitForm = async (event: React.KeyboardEvent) => {
-    if (event.key === "Enter") {
-      event.preventDefault();
-      dispatch(submitScript(script));
-      setScript("");
+    try {
+      if (event.key === "Enter") {
+        event.preventDefault();
+        await dispatch(submitScript(script)).unwrap();
+        setScript("");
+      }
+    } catch (err) {
+      // dispatch error message
+      console.log(err);
     }
   }
 
